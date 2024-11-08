@@ -10,7 +10,7 @@ if [ -f vbmeta.img ]; then
     fi
 
     # Sign vbmeta.img with the generated key
-    python3 ./avbtool make_vbmeta_image --key phh.pem --algorithm SHA256_RSA4096 --flag 2 --padding_size 4096 --output vbmeta-signed.img --chain_partition vbmeta:vbmeta.img
+    python3 avbtool make_vbmeta_image --key phh.pem --algorithm SHA256_RSA4096 --flag 2 --padding_size 4096 --output vbmeta-signed.img --chain_partition vbmeta:vbmeta.img
 
 else
     echo "Error: vbmeta.img not found."
