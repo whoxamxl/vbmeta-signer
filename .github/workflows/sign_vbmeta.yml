@@ -1,0 +1,47 @@
+name: SIGN_VBMETA
+
+on:
+  workflow_dispatch:
+    inputs:
+      VBMETA_URL:
+        description: 'URL of Patched VBMETA Image'
+        required: true
+        default: 'https://transfer.sh/(RECOMMENDED)'
+
+env:
+  VBMETA_URL: https://oshi.at/vbmeta.img
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check Out
+      uses: actions/checkout@main
+
+    - name: Prepare the Environment
+      run: |
+        sudo apt install git wget lz4 tar openssl python3 -y
+
+    - name: Fetch vbmeta Image from URL
+      run: |
+        wget ${{ github.event.inputs.VBMETA_URL }} -O vbmeta.img
+
+    - name: Sign vbmeta Image
+      run: |
+        chmod +x script1.sh
+        ./script1.sh
+
+    - name: Package Signed VBMETA for Odin
+      run: |
+        mkdir output && cd output
+        mv ../vbmeta-signed.img vbmeta.img
+        tar cvf fastbootd-vbmeta.tar vbmeta.img
+        md5sum -t fastbootd-vbmeta.tar >> fastbootd-vbmeta.tar
+        mv fastbootd-vbmeta.tar fastbootd-vbmeta.tar.md5
+
+    - name: Upload Signed VBMETA for Odin
+      uses: actions/upload-artifact@v3.0.0
+      with:
+        path: /home/runner/work/SIGN_VBMETA/SIGN_VBMETA/output/*.md5
+        name: Signed-VBMETA
