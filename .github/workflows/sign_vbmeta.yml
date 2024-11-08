@@ -32,19 +32,19 @@ jobs:
         chmod +x script1.sh
         ./script1.sh
 
-        - name: Package Signed VBMETA for Odin
-        run: |
-          mkdir -p output
-          # Move the signed vbmeta file to the output directory
-          mv vbmeta-signed.img output/vbmeta.img
-          cd output
-          # Create the tar file and generate the MD5 checksum
-          tar cvf fastbootd-vbmeta.tar vbmeta.img
-          md5sum -t fastbootd-vbmeta.tar >> fastbootd-vbmeta.tar
-          mv fastbootd-vbmeta.tar fastbootd-vbmeta.tar.md5
+    - name: Package Signed VBMETA for Odin
+      run: |
+        mkdir -p output
+        # Move the signed vbmeta file to the output directory
+        mv vbmeta-signed.img output/vbmeta.img
+        cd output
+        # Create the tar file and generate the MD5 checksum
+        tar cvf fastbootd-vbmeta.tar vbmeta.img
+        md5sum -t fastbootd-vbmeta.tar >> fastbootd-vbmeta.tar
+        mv fastbootd-vbmeta.tar fastbootd-vbmeta.tar.md5
   
-      - name: Upload Signed VBMETA for Odin
-        uses: actions/upload-artifact@v3.0.0
-        with:
-          path: output/fastbootd-vbmeta.tar.md5
-          name: Signed-VBMETA
+    - name: Upload Signed VBMETA for Odin
+      uses: actions/upload-artifact@v3.0.0
+      with:
+        path: output/fastbootd-vbmeta.tar.md5
+        name: Signed-VBMETA
