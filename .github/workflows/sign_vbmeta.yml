@@ -27,12 +27,6 @@ jobs:
       run: |
         wget ${{ github.event.inputs.VBMETA_URL }} -O vbmeta.img
 
-    - name: Install avbtool
-      run: |
-        wget https://android.googlesource.com/platform/external/avb/+archive/refs/heads/master/avbtool -O avbtool
-        chmod +x avbtool
-
-
     - name: Sign vbmeta Image
       run: |
         chmod +x script1.sh
